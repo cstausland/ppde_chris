@@ -39,7 +39,7 @@ def trapezoidal_vec(h, f):
 	#array
     f[0] /= 2.0
     f[-1] /= 2.0
-    I = h*np.sum(f_vec)
+    I = h*numpy.sum(f)
     return I
 
 # Start of script
@@ -56,11 +56,11 @@ a = 0.
 b = 1.
 h = (b-a)/(n-1)
 x = numpy.linspace(a,b,n)
-f = 2*x
-#f = 3.*x**2
+#f = 2*x
+f = 3.*x**2
 
-petsc_integral = trapezoidal_petsc(h,f)
-vec_integral = trapezoidal_vec
+petsc_integral = trapezoidal_petsc(h, f)
+vec_integral = trapezoidal_vec(h, f)
 
 if PETSc.COMM_WORLD.getRank() == 0:
 	print 'PETSc solution:   ', petsc_integral

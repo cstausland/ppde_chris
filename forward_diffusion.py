@@ -59,7 +59,7 @@ T.setValue(0,0,1); T.setValue(0,1,0);
 T.setValue(n-1,n-1,1); T.setValue(n-1,n-2,0);
 
 # Create the two vectors, we need two of them (new and old).
-un = PETSc.Vec().createMPI(n); un.set(1);
+un = PETSc.Vec().createMPI(n); #un.set(1);
 unm1 = PETSc.Vec().createMPI(n)
 
 # The inital condition is an exponential or sine for now
