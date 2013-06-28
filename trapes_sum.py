@@ -19,10 +19,9 @@ import petsc4py, sys, numpy
 petsc4py.init(sys.argv)
 from petsc4py import PETSc
 
-def trapes_rule(h, f):
+def trapezoidal_petsc(h, f):
 	# Make a PETSc-vector of the vector f *without* the two endpoints
 	# THIS createSeq DOES NOT ALLOW PARALLELISATION?
-	#Pf = PETSc.Vec().createSeq(f.size-2)
 	Pf = PETSc.Vec().createMPI(f.size-2,comm=PETSc.COMM_WORLD)
 	Pf.setValues(range(f.size-2), f[1:-1])
 	
@@ -34,6 +33,14 @@ def trapes_rule(h, f):
 	
 	return integ
 
+def trapezoidal_vec(h, f):
+    #Compute the integral of f from a to b with n intervals,
+    #using the Trapezoidal rule. Vectorized version. f is numpy
+	#array
+    f[0] /= 2.0
+    f[-1] /= 2.0
+    I = h*np.sum(f_vec)
+    return I
 
 # Start of script
 if (len(sys.argv) > 1):
@@ -49,11 +56,15 @@ a = 0.
 b = 1.
 h = (b-a)/(n-1)
 x = numpy.linspace(a,b,n)
-#f = 2*x
-f = 3.*x**2
+f = 2*x
+#f = 3.*x**2
 
-this_integral = trapes_rule(h,f)
+petsc_integral = trapezoidal_petsc(h,f)
+vec_integral = trapezoidal_vec
+
 if PETSc.COMM_WORLD.getRank() == 0:
-	print this_integral
+	print 'PETSc solution:   ', petsc_integral
+	print 'Vec solution:     ', vec_integral
+	print 'Difference:       ', petsc_integral-vec_integral
 
 #
