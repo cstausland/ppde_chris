@@ -3,16 +3,19 @@ function A = import_petsc_file_2d(filen,nx,ny,Nt)
     A = NaN(nx,ny,Nt);
     Atemp = NaN(1,nx*ny);
     
+%     fgetl(fid);
     for k=1:Nt
-        fgetl(fid); fgetl(fid); fgetl(fid);
+        fgetl(fid); fgetl(fid); %fgetl(fid);
         for i=1:nx*ny
             l = fgetl(fid);
             numb = sscanf(l,'%f');
             
+%             disp([k, i, numb]);
             Atemp(i) = numb;
         end
         
         A(:,:,k) = reshape(Atemp,[nx ny]);
+%         fgetl(fid); fgetl(fid);
     end
 %     while 1
 %         l = fgetl(fid);

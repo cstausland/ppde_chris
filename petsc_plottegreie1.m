@@ -1,4 +1,5 @@
-clear; tic; A = import_petsc_file('test.txt'); toc;
+% tic; A = import_petsc_file('test.txt'); toc;
+tic; A = import_petsc_file('test3.txt'); toc;
 
 figure; pause(0.01)
 min_ = min(min(A));
